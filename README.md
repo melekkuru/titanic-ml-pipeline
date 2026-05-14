@@ -1,4 +1,3 @@
-
 # Titanic ML Pipeline
 
 An end-to-end Machine Learning pipeline project built with Scikit-learn for Titanic survival prediction.
@@ -21,7 +20,7 @@ The Titanic dataset is loaded directly from Seaborn:
 import seaborn as sns
 
 df = sns.load_dataset("titanic")
-````
+```
 
 No local dataset file is required to run this notebook.
 
@@ -55,13 +54,13 @@ Evaluation
 
 # Technologies Used
 
-* Python
-* Pandas
-* NumPy
-* Scikit-learn
-* Seaborn
-* Matplotlib
-* XGBoost
+- Python
+- Pandas
+- NumPy
+- Scikit-learn
+- Seaborn
+- Matplotlib
+- XGBoost
 
 ---
 
@@ -69,37 +68,37 @@ Evaluation
 
 ## Data Preprocessing
 
-* Missing value handling
-* OneHotEncoder
-* StandardScaler
-* ColumnTransformer
-* Scikit-learn Pipelines
-* Data leakage prevention
+- Missing value handling
+- OneHotEncoder
+- StandardScaler
+- ColumnTransformer
+- Scikit-learn Pipelines
+- Data leakage prevention
 
 ## Model Training
 
-* Logistic Regression
-* Random Forest
-* XGBoost
+- Logistic Regression
+- Random Forest
+- XGBoost
 
 ## Evaluation Metrics
 
-* Accuracy
-* Precision
-* Recall
-* F1-Score
-* ROC-AUC
-* Confusion Matrix
+- Accuracy
+- Precision
+- Recall
+- F1-Score
+- ROC-AUC
+- Confusion Matrix
 
 ---
 
 # Models Compared
 
-| Model               | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
-| ------------------- | -------: | --------: | -----: | -------: | ------: |
-| Logistic Regression |    0.804 |     0.793 |  0.667 |    0.724 |   0.843 |
-| Random Forest       |    0.810 |     0.787 |  0.696 |    0.738 |   0.840 |
-| XGBoost             |    0.804 |     0.758 |  0.724 |    0.741 |   0.809 |
+| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+|---|---:|---:|---:|---:|---:|
+| Logistic Regression | 0.804 | 0.793 | 0.667 | 0.724 | 0.843 |
+| Random Forest | 0.810 | 0.787 | 0.696 | 0.738 | 0.840 |
+| XGBoost | 0.804 | 0.758 | 0.724 | 0.741 | 0.809 |
 
 ---
 
@@ -109,10 +108,10 @@ The Logistic Regression model was selected as the final baseline model because i
 
 Classification report summary:
 
-| Class               | Precision | Recall | F1-Score | Support |
-| ------------------- | --------: | -----: | -------: | ------: |
-| 0 - Did not survive |      0.81 |   0.89 |     0.85 |     110 |
-| 1 - Survived        |      0.79 |   0.67 |     0.72 |      69 |
+| Class | Precision | Recall | F1-Score | Support |
+|---|---:|---:|---:|---:|
+| 0 - Did not survive | 0.81 | 0.89 | 0.85 | 110 |
+| 1 - Survived | 0.79 | 0.67 | 0.72 | 69 |
 
 Overall accuracy: **0.80**
 
@@ -129,13 +128,12 @@ The model performed better on class `0` than class `1`, meaning it was better at
 # Key Learning Outcomes
 
 This project helped build understanding of:
-
-* how preprocessing workflows are structured
-* why feature engineering matters
-* how Scikit-learn Pipelines prevent data leakage
-* how to compare multiple classification models
-* how to interpret classification metrics
-* how to document a machine learning project professionally
+- how preprocessing workflows are structured
+- why feature engineering matters
+- how Scikit-learn Pipelines prevent data leakage
+- how to compare multiple classification models
+- how to interpret classification metrics
+- how to document a machine learning project professionally
 
 ---
 
@@ -159,18 +157,15 @@ titanic-ml-pipeline/
 
 # Future Improvements
 
-* Hyperparameter tuning with GridSearchCV
-* Cross-validation optimization
-* Feature importance analysis
-* ROC Curve visualization
-* Modular Python scripts for training and evaluation
-* Deployment with FastAPI
+- Hyperparameter tuning with GridSearchCV
+- Cross-validation optimization
+- Feature importance analysis
+- ROC Curve visualization
+- Modular Python scripts for training and evaluation
+- Deployment with FastAPI
 
 ---
 
 # Author
 
 Melek Kuru
-
-```
-
