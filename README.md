@@ -1,5 +1,4 @@
 
-````markdown
 # Titanic ML Pipeline
 
 An end-to-end Machine Learning pipeline project built with Scikit-learn for Titanic survival prediction.
@@ -174,4 +173,4 @@ titanic-ml-pipeline/
 Melek Kuru
 
 ```
-```
+
