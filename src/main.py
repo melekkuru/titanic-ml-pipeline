@@ -1,3 +1,6 @@
+from enum import Enum
+from pathlib import Path
+
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import joblib
@@ -9,17 +12,27 @@ app = FastAPI(
     version="1.0.0"
 )
 
-model = joblib.load("src/titanic_model.pkl")
+MODEL_PATH = Path(__file__).parent / "titanic_model.pkl"
+model = joblib.load(MODEL_PATH)
 
+class Sex(str, Enum):
+    male = "male"
+    female = "female"
+
+
+class Embarked(str, Enum):
+    S = "S"
+    C = "C"
+    Q = "Q"
 
 class Passenger(BaseModel):
     pclass: int = Field(..., ge=1, le=3, example=3)
-    sex: str = Field(..., example="male")
+    sex: Sex = Field(..., example="male")
     age: float = Field(..., ge=0, le=120, example=22)
     sibsp: int = Field(..., ge=0, example=1)
     parch: int = Field(..., ge=0, example=0)
     fare: float = Field(..., ge=0, example=7.25)
-    embarked: str = Field(..., example="S")
+    embarked: Embarked = Field(..., example="S")
 
 
 class PredictionResponse(BaseModel):
