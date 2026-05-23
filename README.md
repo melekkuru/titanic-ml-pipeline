@@ -1,44 +1,47 @@
-# Titanic ML Pipeline & FastAPI Deployment
+# Titanic ML Pipeline
 
-An end-to-end Machine Learning pipeline project built with Scikit-learn and FastAPI for Titanic survival prediction.
+An end-to-end Machine Learning pipeline project for predicting Titanic passenger survival using Scikit-learn, FastAPI, and model deployment best practices.
 
 This project demonstrates:
-- data preprocessing
-- feature engineering
-- machine learning pipelines
-- model comparison
-- classification analysis
-- model serialization
-- ML model deployment with FastAPI
-- real-time inference API development
+
+* exploratory data analysis (EDA)
+* feature engineering
+* preprocessing pipelines
+* model comparison
+* classification evaluation
+* model interpretability
+* FastAPI deployment
+* API validation and testing
 
 ---
 
 # Project Overview
 
-The goal of this project is to predict passenger survival on the Titanic dataset using multiple machine learning models and deploy the trained model as a production-style inference API.
+The goal of this project is to build a complete machine learning workflow for binary classification using the Titanic dataset.
 
-The workflow includes:
-- preprocessing structured tabular data
-- preventing data leakage with Scikit-learn Pipelines
-- comparing classification models
-- evaluating model performance
-- serializing the trained model with Joblib
-- serving predictions through FastAPI
+The project covers the entire ML lifecycle:
+
+* data exploration
+* preprocessing
+* model training
+* evaluation
+* deployment
+* API serving
+* testing
 
 ---
 
 # Data Source
 
-The Titanic dataset is loaded directly from Seaborn:
+The dataset is loaded directly from Seaborn:
 
 ```python
 import seaborn as sns
 
 df = sns.load_dataset("titanic")
-````
+```
 
-No local dataset file is required to run the notebook.
+No local CSV file is required.
 
 ---
 
@@ -47,15 +50,13 @@ No local dataset file is required to run the notebook.
 ```text
 Raw Data
 ↓
-EDA
+Exploratory Data Analysis
 ↓
 Feature Selection
 ↓
 Missing Value Handling
 ↓
-Encoding
-↓
-Scaling
+Encoding & Scaling
 ↓
 Train/Test Split
 ↓
@@ -63,56 +64,88 @@ Model Training
 ↓
 Model Comparison
 ↓
-Model Serialization (.pkl)
+Evaluation
+↓
+Feature Importance Analysis
+↓
+Model Serialization
 ↓
 FastAPI Deployment
 ↓
-Real-Time Prediction API
+API Testing
 ```
 
 ---
 
 # Technologies Used
 
+## Data Science & Machine Learning
+
 * Python
 * Pandas
 * NumPy
 * Scikit-learn
+* XGBoost
 * Seaborn
 * Matplotlib
-* XGBoost
+
+## Backend & Deployment
+
 * FastAPI
 * Uvicorn
 * Pydantic
 * Joblib
 
+## Testing
+
+* Pytest
+* HTTPX
+
 ---
 
-# Machine Learning Concepts Covered
+# Exploratory Data Analysis (EDA)
 
-## Data Preprocessing
+The notebook includes several exploratory visualizations to understand relationships between features and survival outcomes.
 
-* Missing value handling
-* OneHotEncoder
-* StandardScaler
-* ColumnTransformer
-* Scikit-learn Pipelines
-* Data leakage prevention
+## Survival by Gender
 
-## Model Training
+Female passengers had significantly higher survival rates compared to male passengers.
 
-* Logistic Regression
-* Random Forest
-* XGBoost
+![Survival by Gender](images/survival_by_gender.png)
 
-## Evaluation Metrics
+---
 
-* Accuracy
-* Precision
-* Recall
-* F1-Score
-* ROC-AUC
-* Confusion Matrix
+## Age Distribution by Survival
+
+The age distribution analysis shows that survival outcomes varied across all age groups, although younger passengers showed slightly higher survival tendencies.
+
+![Age Distribution](images/age_distribution.png)
+
+---
+
+## Survival by Passenger Class
+
+Passengers in higher ticket classes had substantially higher survival probabilities.
+
+![Survival by Class](images/survival_by_class.png)
+
+---
+
+# Machine Learning Pipeline
+
+The project uses Scikit-learn Pipelines and ColumnTransformer to ensure clean preprocessing and prevent data leakage.
+
+## Preprocessing Steps
+
+### Numerical Features
+
+* Missing value imputation using median
+* Feature scaling using StandardScaler
+
+### Categorical Features
+
+* Missing value imputation using most frequent value
+* One-hot encoding using OneHotEncoder
 
 ---
 
@@ -120,26 +153,39 @@ Real-Time Prediction API
 
 | Model               | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
 | ------------------- | -------: | --------: | -----: | -------: | ------: |
-| Logistic Regression |    0.804 |     0.793 |  0.667 |    0.724 |   0.843 |
-| Random Forest       |    0.810 |     0.787 |  0.696 |    0.738 |   0.840 |
-| XGBoost             |    0.804 |     0.758 |  0.724 |    0.741 |   0.809 |
+| Logistic Regression |     0.80 |      0.79 |   0.67 |     0.72 |    0.84 |
+| Random Forest       |     0.81 |      0.79 |   0.70 |     0.74 |    0.84 |
+| XGBoost             |     0.80 |      0.76 |   0.72 |     0.74 |    0.81 |
+
+---
+
+# Class Imbalance Handling
+
+To address class imbalance, Logistic Regression was retrained using:
+
+```python
+class_weight="balanced"
+```
+
+This approach improved minority-class sensitivity and helped the model better detect survival outcomes.
 
 ---
 
 # Final Model Evaluation
 
-The Logistic Regression model was selected as the final baseline model because it is simple, interpretable, and achieved strong ROC-AUC performance.
+The Logistic Regression model was selected as the final baseline model because it remained:
 
-Classification report summary:
+* interpretable
+* lightweight
+* fast
+* deployment-friendly
 
-| Class               | Precision | Recall | F1-Score | Support |
-| ------------------- | --------: | -----: | -------: | ------: |
-| 0 - Did not survive |      0.81 |   0.89 |     0.85 |     110 |
-| 1 - Survived        |      0.79 |   0.67 |     0.72 |      69 |
+Classification report observations:
 
-Overall accuracy: **0.80**
-
-The model performed better on class `0` than class `1`, meaning it was better at identifying passengers who did not survive than passengers who survived.
+* strong overall accuracy
+* high precision for non-survival predictions
+* lower recall for survival predictions
+* evidence of class imbalance effects
 
 ---
 
@@ -149,38 +195,35 @@ The model performed better on class `0` than class `1`, meaning it was better at
 
 ---
 
+# Feature Importance Analysis
+
+Feature importance analysis was performed using the Random Forest model to improve interpretability.
+
+The analysis showed that:
+
+* fare
+* age
+* gender
+
+were among the most influential features for survival prediction.
+
+![Feature Importance](images/feature_importance.png)
+
+---
+
 # FastAPI Deployment
 
-The trained Titanic survival prediction pipeline was serialized using Joblib and deployed through a FastAPI inference API.
+The trained model was deployed using FastAPI.
 
 The API supports:
 
-* real-time prediction requests
-* JSON request validation with Pydantic
-* automatic Swagger/OpenAPI documentation
-* probability-based survival prediction
+* prediction requests
+* input validation
+* response schemas
+* automatic Swagger documentation
+* error handling
 
----
-
-# Run the API
-
-```bash
-uvicorn src.main:app --reload
-```
-
----
-
-# Swagger Documentation
-
-After starting the server:
-
-```text
-http://127.0.0.1:8000/docs
-```
-
----
-
-# Example Request
+## Example Prediction Request
 
 ```json
 {
@@ -194,9 +237,7 @@ http://127.0.0.1:8000/docs
 }
 ```
 
----
-
-# Example Response
+## Example API Response
 
 ```json
 {
@@ -207,19 +248,61 @@ http://127.0.0.1:8000/docs
 
 ---
 
-# Key Learning Outcomes
+# API Validation Features
 
-This project helped build understanding of:
+The API includes:
 
-* how preprocessing workflows are structured
-* why feature engineering matters
-* how Scikit-learn Pipelines prevent data leakage
-* how to compare multiple classification models
-* how to interpret classification metrics
-* how to serialize trained ML models
-* how to expose ML models through APIs
-* how FastAPI handles request validation
-* how to design production-style ML inference systems
+* enum validation
+* numerical range validation
+* structured response models
+* HTTP exception handling
+
+Example validations:
+
+* `sex` must be `male` or `female`
+* `embarked` must be `S`, `C`, or `Q`
+* age cannot be negative
+
+---
+
+# API Testing
+
+The project includes automated API tests using Pytest and FastAPI TestClient.
+
+Test coverage includes:
+
+* root endpoint testing
+* valid prediction requests
+* invalid input handling
+* validation error testing
+
+Run tests:
+
+```bash
+pytest
+```
+
+---
+
+# Running the API
+
+## Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## Start the server
+
+```bash
+uvicorn src.main:app --reload
+```
+
+## Open Swagger Documentation
+
+```text
+http://127.0.0.1:8000/docs
+```
 
 ---
 
@@ -228,18 +311,23 @@ This project helped build understanding of:
 ```text
 titanic-ml-pipeline/
 │
-├── app/
-│   └── main.py
-│
-├── src/
-│   ├── main.py
-│   └── titanic_model.pkl
+├── images/
+│   ├── age_distribution.png
+│   ├── confusion_matrix.png
+│   ├── feature_importance.png
+│   ├── survival_by_class.png
+│   └── survival_by_gender.png
 │
 ├── notebook/
 │   └── titanic_pipeline.ipynb
 │
-├── images/
-│   └── confusion_matrix.png
+├── src/
+│   ├── __init__.py
+│   ├── main.py
+│   └── titanic_model.pkl
+│
+├── tests/
+│   └── test_api.py
 │
 ├── README.md
 ├── requirements.txt
@@ -248,22 +336,33 @@ titanic-ml-pipeline/
 
 ---
 
+# Key Learning Outcomes
+
+This project helped strengthen understanding of:
+
+* end-to-end ML workflows
+* preprocessing pipelines
+* classification metrics
+* model interpretability
+* class imbalance handling
+* FastAPI deployment
+* API testing
+* production-oriented ML engineering practices
+
+---
+
 # Future Improvements
 
 * Hyperparameter tuning with GridSearchCV
 * Cross-validation optimization
-* Feature importance analysis
 * Docker containerization
-* Cloud deployment (Render/Railway/AWS)
-* Authentication and API security
-* Monitoring and logging
 * CI/CD integration
+* Cloud deployment
+* MLflow experiment tracking
+* Advanced monitoring and logging
 
 ---
 
 # Author
 
-Melek Kuru
-
-```
-```
+**Melek Kuru**
