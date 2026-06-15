@@ -1,6 +1,6 @@
 # Titanic ML Pipeline
 
-An end-to-end Machine Learning pipeline project for predicting Titanic passenger survival using Scikit-learn, FastAPI, and model deployment best practices.
+An end-to-end Machine Learning pipeline project for predicting Titanic passenger survival using Scikit-learn, FastAPI, and Docker.
 
 This project demonstrates:
 
@@ -12,6 +12,7 @@ This project demonstrates:
 * model interpretability
 * FastAPI deployment
 * API validation and testing
+* Docker containerization
 
 ---
 
@@ -28,6 +29,7 @@ The project covers the entire ML lifecycle:
 * deployment
 * API serving
 * testing
+* containerization
 
 ---
 
@@ -73,6 +75,8 @@ Model Serialization
 FastAPI Deployment
 ↓
 API Testing
+↓
+Docker Containerization
 ```
 
 ---
@@ -95,6 +99,8 @@ API Testing
 * Uvicorn
 * Pydantic
 * Joblib
+* Docker
+* Docker Compose
 
 ## Testing
 
@@ -111,23 +117,13 @@ The notebook includes several exploratory visualizations to understand relations
 
 Female passengers had significantly higher survival rates compared to male passengers.
 
-![Survival by Gender](images/survival_by_gender.png)
-
----
-
 ## Age Distribution by Survival
 
 The age distribution analysis shows that survival outcomes varied across all age groups, although younger passengers showed slightly higher survival tendencies.
 
-![Age Distribution](images/age_distribution.png)
-
----
-
 ## Survival by Passenger Class
 
 Passengers in higher ticket classes had substantially higher survival probabilities.
-
-![Survival by Class](images/survival_by_class.png)
 
 ---
 
@@ -186,28 +182,6 @@ Classification report observations:
 * high precision for non-survival predictions
 * lower recall for survival predictions
 * evidence of class imbalance effects
-
----
-
-# Confusion Matrix
-
-![Confusion Matrix](images/confusion_matrix.png)
-
----
-
-# Feature Importance Analysis
-
-Feature importance analysis was performed using the Random Forest model to improve interpretability.
-
-The analysis showed that:
-
-* fare
-* age
-* gender
-
-were among the most influential features for survival prediction.
-
-![Feature Importance](images/feature_importance.png)
 
 ---
 
@@ -284,7 +258,38 @@ pytest
 
 ---
 
-# Running the API
+# Docker
+
+The application is fully containerized using Docker and Docker Compose.
+
+## Run with Docker Compose
+
+```bash
+docker-compose up -d
+```
+
+Open Swagger Documentation:
+
+```
+http://localhost:8000/docs
+```
+
+## Stop
+
+```bash
+docker-compose down
+```
+
+## Run with Docker (without Compose)
+
+```bash
+docker build -t titanic-api:1.0 .
+docker run -d -p 8000:8000 --name titanic-api titanic-api:1.0
+```
+
+---
+
+# Running the API Locally
 
 ## Install dependencies
 
@@ -300,7 +305,7 @@ uvicorn src.main:app --reload
 
 ## Open Swagger Documentation
 
-```text
+```
 http://127.0.0.1:8000/docs
 ```
 
@@ -310,13 +315,6 @@ http://127.0.0.1:8000/docs
 
 ```text
 titanic-ml-pipeline/
-│
-├── images/
-│   ├── age_distribution.png
-│   ├── confusion_matrix.png
-│   ├── feature_importance.png
-│   ├── survival_by_class.png
-│   └── survival_by_gender.png
 │
 ├── notebook/
 │   └── titanic_pipeline.ipynb
@@ -329,9 +327,12 @@ titanic-ml-pipeline/
 ├── tests/
 │   └── test_api.py
 │
+├── .dockerignore
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
 ├── README.md
-├── requirements.txt
-└── .gitignore
+└── requirements.txt
 ```
 
 ---
@@ -347,6 +348,7 @@ This project helped strengthen understanding of:
 * class imbalance handling
 * FastAPI deployment
 * API testing
+* Docker containerization
 * production-oriented ML engineering practices
 
 ---
@@ -355,7 +357,6 @@ This project helped strengthen understanding of:
 
 * Hyperparameter tuning with GridSearchCV
 * Cross-validation optimization
-* Docker containerization
 * CI/CD integration
 * Cloud deployment
 * MLflow experiment tracking
