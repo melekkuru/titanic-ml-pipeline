@@ -1,0 +1,10 @@
+.venv
+.git
+.vscode
+__pycache__
+*.pyc
+data/
+images/
+notebook/
+.pytest_cache
+tests/
