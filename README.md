@@ -311,6 +311,24 @@ http://127.0.0.1:8000/docs
 
 ---
 
+# Streamlit UI
+
+A simple web interface is available for interacting with the model without using Swagger.
+
+## Run the UI
+
+Make sure the API is running first (via Docker or locally), then:
+
+```bash
+streamlit run streamlit_app/app.py
+```
+
+Open in browser:
+
+```
+http://localhost:8501
+```
+
 # Repository Structure
 
 ```text
