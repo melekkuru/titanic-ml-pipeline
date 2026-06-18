@@ -329,6 +329,12 @@ Open in browser:
 http://localhost:8501
 ```
 
+# Live Demo
+
+Try the model without any setup:
+
+🔗 **[Titanic Survival Predictor (Hugging Face Spaces)](https://huggingface.co/spaces/melekkuru/titanic-survival-predictor)**
+
 # Repository Structure
 
 ```text
