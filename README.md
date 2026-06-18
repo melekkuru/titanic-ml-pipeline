@@ -13,6 +13,16 @@ This project demonstrates:
 * FastAPI deployment
 * API validation and testing
 * Docker containerization
+* CI automation with GitHub Actions
+* public deployment via Hugging Face Spaces
+
+---
+
+# Live Demo
+
+Try the model without any setup:
+
+🔗 **[Titanic Survival Predictor (Hugging Face Spaces)](https://huggingface.co/spaces/melekkuru/titanic-survival-predictor)**
 
 ---
 
@@ -30,6 +40,8 @@ The project covers the entire ML lifecycle:
 * API serving
 * testing
 * containerization
+* continuous integration
+* public deployment
 
 ---
 
@@ -77,7 +89,49 @@ FastAPI Deployment
 API Testing
 ↓
 Docker Containerization
+↓
+CI (GitHub Actions)
+↓
+Public Deployment (Hugging Face Spaces)
 ```
+
+---
+
+# Architecture
+
+```mermaid
+graph TB
+    subgraph Local["💻 Local Development / Docker"]
+        direction LR
+        U1["User"] --> ST1["Streamlit UI<br/>(localhost:8501)"]
+        ST1 -->|HTTP POST| API["FastAPI<br/>(localhost:8000)"]
+        API --> M1["titanic_model.pkl"]
+        M1 --> API
+        API -->|JSON response| ST1
+    end
+
+    subgraph Cloud["☁️ Public Demo - Hugging Face Spaces"]
+        direction LR
+        U2["User"] --> ST2["Streamlit App<br/>(self-contained)"]
+        ST2 --> M2["titanic_model.pkl<br/>(loaded directly)"]
+        M2 --> ST2
+    end
+
+    DEV["Training Pipeline<br/>(Jupyter Notebook)"] -->|joblib.dump| MODEL["Trained Model<br/>(.pkl)"]
+    MODEL --> M1
+    MODEL --> M2
+
+    GH["GitHub Repository"] -->|git push| CI["GitHub Actions<br/>(CI: pytest)"]
+    GH -.->|deploy| Cloud
+    GH -.->|build| Local
+```
+
+**How to read this diagram:**
+
+- **Local / Docker** — Streamlit and FastAPI run as two separate services and communicate over HTTP, mirroring a real microservice setup.
+- **Hugging Face Spaces** — Streamlit loads the model directly, with no separate API layer. This keeps the public demo simple and easy to host.
+- Both environments use the **same trained model file**, only the serving architecture differs.
+- Every push to GitHub triggers **GitHub Actions**, which runs the test suite before changes are considered stable.
 
 ---
 
@@ -101,11 +155,14 @@ Docker Containerization
 * Joblib
 * Docker
 * Docker Compose
+* Streamlit
+* Hugging Face Spaces
 
-## Testing
+## Testing & CI
 
 * Pytest
 * HTTPX
+* GitHub Actions
 
 ---
 
@@ -239,7 +296,7 @@ Example validations:
 
 ---
 
-# API Testing
+# Testing & Continuous Integration
 
 The project includes automated API tests using Pytest and FastAPI TestClient.
 
@@ -250,11 +307,22 @@ Test coverage includes:
 * invalid input handling
 * validation error testing
 
-Run tests:
+Run tests locally:
 
 ```bash
 pytest
 ```
+
+## GitHub Actions CI
+
+Every push and pull request to `main` automatically triggers a GitHub Actions workflow that:
+
+1. Checks out the repository
+2. Sets up Python 3.11
+3. Installs dependencies from `requirements.txt`
+4. Runs the full test suite with `pytest`
+
+This ensures that dependency conflicts or breaking changes are caught before they reach production. The workflow is defined in `.github/workflows/ci.yml`.
 
 ---
 
@@ -315,6 +383,8 @@ http://127.0.0.1:8000/docs
 
 A simple web interface is available for interacting with the model without using Swagger.
 
+This local version calls the FastAPI service over HTTP (see [Architecture](#architecture)).
+
 ## Run the UI
 
 Make sure the API is running first (via Docker or locally), then:
@@ -329,16 +399,16 @@ Open in browser:
 http://localhost:8501
 ```
 
-# Live Demo
-
-Try the model without any setup:
-
-🔗 **[Titanic Survival Predictor (Hugging Face Spaces)](https://huggingface.co/spaces/melekkuru/titanic-survival-predictor)**
+---
 
 # Repository Structure
 
 ```text
 titanic-ml-pipeline/
+│
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 │
 ├── notebook/
 │   └── titanic_pipeline.ipynb
@@ -347,6 +417,9 @@ titanic-ml-pipeline/
 │   ├── __init__.py
 │   ├── main.py
 │   └── titanic_model.pkl
+│
+├── streamlit_app/
+│   └── app.py
 │
 ├── tests/
 │   └── test_api.py
@@ -373,6 +446,8 @@ This project helped strengthen understanding of:
 * FastAPI deployment
 * API testing
 * Docker containerization
+* continuous integration with GitHub Actions
+* public model deployment with Hugging Face Spaces
 * production-oriented ML engineering practices
 
 ---
@@ -381,10 +456,9 @@ This project helped strengthen understanding of:
 
 * Hyperparameter tuning with GridSearchCV
 * Cross-validation optimization
-* CI/CD integration
-* Cloud deployment
 * MLflow experiment tracking
 * Advanced monitoring and logging
+* Database integration for storing predictions
 
 ---
 
